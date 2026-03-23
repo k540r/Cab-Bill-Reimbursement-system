@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+	name="viewport">
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+<title>Register</title>
+
+<!-- Include your CSS and other header elements -->
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const alertBox = document.getElementById('alertBox');
+		if (alertBox) {
+			setTimeout(function() {
+				alertBox.style.opacity = '0';
+				setTimeout(function() {
+					alertBox.style.display = 'none';
+				}, 500); // Delay hiding the element after fading out
+			}, 5000); // 5000 milliseconds = 5 seconds
+		}
+	});
+</script>
+
+<!-- General CSS Files -->
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/fontawesome/css/all.min.css}">
+
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200"
+	rel="stylesheet" />
+
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/daterange/daterange.css}">
+
+<!-- CSS Libraries -->
+
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/jquery-selectric/selectric.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-daterangepicker/daterangepicker.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/select2/dist/css/select2.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css}">
+
+<!-- Template CSS -->
+<link rel="stylesheet" th:href="@{/assets_1/css/style.css}">
+<link rel="stylesheet" th:href="@{/assets_1/css/components.css}">
+
+
+<script th:src="@{/assets/js/commonValidation.js}"></script>
+
+
+</head>
+
+<body>
+	<div id="app">
+		<section class="section">
+			<div class="container mt-2">
+				<div class="row">
+					<div
+						class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+						<div class="login-brand">
+							<img th:src="@{/assets_1/img/bisag_logo.png}" alt="logo"
+								width="280" height="150">
+						</div>
+
+						<div class="card card-primary">
+							<div class="card-header">
+								<h3 style="text-align: center;">
+									<b>Register</b>
+								</h3>
+							</div>
+
+							<div class="card-body">
+
+								<!-- Error Alert Box -->
+								<div th:if="${error}" class="alert alert-danger" id="alertBox"
+									style="transition: opacity 0.5s;">
+									<p th:text="${error}"></p>
+								</div>
+
+								<form onsubmit="return validateForm()" th:action="@{/emp_reg}"
+									th:object="${employee}" method="post"
+									enctype="multipart/form-data">
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="first_name">Full Name<span
+												class="text-danger">*</span></label> <input id="full_name"
+												type="text" class="form-control" name="full_name"
+												oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '').substring(0, 40); 
+                                                        if(this.value.length < 3) { 
+                                                           this.setCustomValidity('Full Name must be at least 3 characters long.'); 
+                                                         } else { 
+                                                             this.setCustomValidity(''); 
+                                                           }">
+											<div class="invalid-feedback"></div>
+
+										</div>
+
+
+
+
+										<div class="form-group col-6">
+											<label for="profilePicture">Profile Picture:<span
+												class="text-danger">*</span><small class="text-danger">(Note:Allowed
+													Upto 500x500 px and 100 Kb)</small></label> <input type="file"
+												class="form-control" id="profilePicture"
+												name="profilePicture" accept="image/*"
+												style="height: auto; width: 100%;" />
+
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="email">Email<span class="text-danger">*</span></label>
+											<input id="email" type="email" class="form-control"
+												name="email">
+											<div class="invalid-feedback">Please fill in the email
+											</div>
+										</div>
+										<div class="form-group col-6">
+											<label>Job Title<span class="text-danger">*</span></label> <select
+												class="form-control selectric" name="jobTitle" id="jobTitle">
+												<option value="">Select Job Title</option>
+												<option th:each="item : ${dropdownItemsJob}"
+													th:value="${item.id}" th:text="${item.name}"></option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="contact_number">Contact Number<span
+												class="text-danger">*</span></label> <input id="contact_number"
+												type="tel" class="form-control" name="contact_number"
+												oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,10);">
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label for="eme_contact_number">Emergency Contact
+												Number</label> <input id="eme_contact_number" type="tel"
+												class="form-control" name="eme_contact_number"
+												oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,10);">
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Date of Birth<span class="text-danger">*</span></label>
+											<input class="form-control" type="date" id="dateOfBirth"
+												name="dateOfBirth">
+											<div class="invalid-feedback">Please select DOB</div>
+										</div>
+										<div class="form-group col-6">
+											<label>Gender<span class="text-danger">*</span></label> <select
+												class="form-control selectric" name="gender" id="gender">
+												<option value="">Select Gender</option>
+												<option>Male</option>
+												<option>Female</option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Blood Group</label> <select
+												class="form-control selectric" name="bloodGroup"
+												id="bloodgroup">
+												<option value="">Select Blood Group</option>
+												<option>AB+</option>
+												<option>AB-</option>
+												<option>O+</option>
+												<option>O-</option>
+												<option>A+</option>
+												<option>A-</option>
+												<option>B+</option>
+												<option>B-</option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label>Marital Status<span class="text-danger">*</span></label>
+											<select class="form-control selectric" name="maritalStatus"
+												id="maritalstatus">
+												<option value="">Select Marital Status</option>
+												<option>Single</option>
+												<option>Married</option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="aadharNumber">Aadhaar Card Number</label> <input
+												id="aadharNumber" type="text" class="form-control"
+												name="aadharNumber" maxlength="12" pattern="\d{12}"
+												oninput="this.value = this.value.replace(/\D/g, '').slice(0, 12);">
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label>Hometown</label> <select
+												class="form-control selectric" name="hometown" id="hometown">
+												<option value="">Select State or Union Territory</option>
+												<option th:each="item : ${dropdownItemsHometown}"
+													th:value="${item.id}" th:text="${item.name}"></option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-12">
+											<label for="currentAddress">Current Address</label>
+											<textarea class="form-control" name="currentAddress"
+												id="address"></textarea>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Joining Date<span class="text-danger">*</span></label>
+											<input class="form-control" type="date" id="joiningDate"
+												name="joiningDate">
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label>Agency<span class="text-danger">*</span></label> <select
+												class="form-control selectric" name="agency" id="agency">
+												<option value="">Select Agency</option>
+												<option th:each="item : ${dropdownItemsAgency}"
+													th:value="${item.id}" th:text="${item.name}"></option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Department<span class="text-danger">*</span></label> <select
+												class="form-control selectric" name="department"
+												id="department">
+												<option value="">Select Department</option>
+												<option th:each="item : ${dropdownItemsDept}"
+													th:value="${item.id}" th:text="${item.name}"></option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label>Reporting Personnel</label> <select
+												class="form-control selectric" name="reporting_per"
+												id="manager">
+												<option value="">Select Manager</option>
+												<option th:each="item : ${dropdownItemsReportingPersonnel}"
+													th:value="${item.id}" th:text="${item.name}"></option>
+											</select>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="password_1">Password<span
+												class="text-danger">*</span></label> <input id="password"
+												type="password" class="form-control" name="password">
+											<div class="invalid-feedback"></div>
+										</div>
+										<div class="form-group col-6">
+											<label for="confirmPassword_1">Confirm Password<span
+												class="text-danger">*</span></label> <input id="confirmPassword"
+												type="password" class="form-control" name="confirmPassword">
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="text-center" style="margin: 30px;">
+							Already Registred? <a th:href="@{/login}">Login</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+	<!-- general js script replace -->
+
+	<div th:replace="footer.html:: general-script"></div>
+
+
+	<script>
+		$("form")
+				.on(
+						"submit",
+						function(event) {
+							event.preventDefault(); // Prevent default form submission
+
+							var form = $(this);
+							var formData = new FormData(this);
+
+							$
+									.ajax({
+										type : form.attr("method"),
+										url : form.attr("action"),
+										data : formData,
+										processData : false,
+										contentType : false,
+										success : function(response) {
+											// Check for the redirect URL and additional data in the response
+											if (response.redirectUrl) {
+												// Construct the URL with query parameters for message and username
+												var redirectUrl = response.redirectUrl
+														+ "?message="
+														+ encodeURIComponent(response.message)
+														+ "&username="
+														+ encodeURIComponent(response.username);
+												window.location.href = redirectUrl; // Redirect to the success page with query parameters
+											}
+										},
+										error : function(response) {
+											// Handle validation errors
+											$(".invalid-feedback").hide(); // Hide any previous error messages
+											$
+													.each(
+															response.responseJSON,
+															function(field,
+																	message) {
+																var inputField = $('[name="'
+																		+ field
+																		+ '"]');
+																inputField
+																		.addClass("is-invalid");
+																inputField
+																		.next(
+																				".invalid-feedback")
+																		.text(
+																				message)
+																		.show();
+															});
+										}
+									});
+						});
+	</script>
+
+
+	
+	
+	<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the Date of Birth and Joining Date input fields
+        const dobField = document.getElementById('dateOfBirth');
+        const joiningDateField = document.getElementById('joiningDate');
+
+        // Set the min and max dates for the Date of Birth field
+        const minDobDate = new Date('1950-01-01'); // January 1, 1950
+        const maxDobDate = new Date('2005-12-31'); // December 31, 2004
+
+        // Set the min and max attributes for the Date of Birth input
+        dobField.min = minDobDate.toISOString().split("T")[0];
+        dobField.max = maxDobDate.toISOString().split("T")[0];
+
+        // Event listener to update the Joining Date based on Date of Birth selection
+        dobField.addEventListener('change', function() {
+            const dob = new Date(dobField.value);
+
+            if (!isNaN(dob.getTime())) { // Check if a valid date is selected
+                const minJoiningDate = new Date(dob);
+                minJoiningDate.setFullYear(minJoiningDate.getFullYear() + 18); // Add 18 years to DOB
+
+                // Set the min date for the Joining Date field
+                joiningDateField.min = minJoiningDate.toISOString().split("T")[0];
+
+                // Optionally set the max date to today to prevent future joining dates
+                const today = new Date();
+                joiningDateField.max = today.toISOString().split("T")[0];
+
+                // If the currently selected joining date is before the minJoiningDate, reset it
+                if (new Date(joiningDateField.value) < minJoiningDate) {
+                    joiningDateField.value = ''; // Reset the Joining Date value if invalid
+                }
+            }
+        });
+
+        // Ensure the calendar opens up to the max date (Dec 2004) for Date of Birth field
+        dobField.addEventListener('click', function() {
+            const selectedDob = new Date(dobField.value);
+            if (selectedDob > maxDobDate) {
+                dobField.value = maxDobDate.toISOString().split("T")[0];
+            }
+        });
+    });
+</script> 
+
+ -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Set the Date of Birth field limits
+        const fromDate = document.getElementById('dateOfBirth');
+
+        // Set the min date to January 1, 1950
+        const minDate = new Date('1950-01-01');
+        // Set the max date to December 31, 2005
+        const maxDate = new Date('2005-12-31');
+
+        // Set the calendar limits
+        fromDate.min = minDate.toISOString().split("T")[0];
+        fromDate.max = maxDate.toISOString().split("T")[0];
+
+       /*  // Optionally, set a default value (e.g., January 1, 1990) for better UX
+        const defaultDate = new Date('1990-01-01');
+        fromDate.value = defaultDate.toISOString().split("T")[0];  */
+    });
+</script>
+	<!-- This is for Joining date -->
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Get the Date of Birth and Joining Date input fields
+			const dobField = document.getElementById('dateOfBirth');
+			const joiningDateField = document.getElementById('joiningDate');
+
+			// Set the maximum date for the Date of Birth field
+			const maxDobDate = new Date();
+			maxDobDate.setFullYear(maxDobDate.getFullYear() - 18); // Only allow DOB at least 18 years ago
+			dobField.max = maxDobDate.toISOString().split("T")[0];
+
+			// Event listener to update the Joining Date based on Date of Birth selection
+			dobField.addEventListener('change', function() {
+				const dob = new Date(dobField.value);
+
+				if (!isNaN(dob.getTime())) { // If a valid date is selected
+					const minJoiningDate = new Date(dob);
+					minJoiningDate
+							.setFullYear(minJoiningDate.getFullYear() + 18); // Add 18 years to DOB
+
+					// Set the minimum date for the Joining Date field
+					joiningDateField.min = minJoiningDate.toISOString().split(
+							"T")[0];
+
+					// Optionally set the maximum to today to prevent future dates
+					const today = new Date();
+					joiningDateField.max = today.toISOString().split("T")[0];
+				}
+			});
+		});
+	</script>
+
+
+<!-- 
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Get the Date of Birth and Joining Date input fields
+			const dobField = document.getElementById('dateOfBirth');
+			const joiningDateField = document.getElementById('joiningDate');
+
+			// Set the min date for Date of Birth (January 1, 1950)
+			const minDobDate = new Date('1950-01-01');
+
+			// Dynamically calculate the max date for Date of Birth as today's date - 18 years
+			const today = new Date();
+			const maxDobDate = new Date();
+			maxDobDate.setFullYear(today.getFullYear() - 18); // Current date minus 18 years
+
+			// Set the min and max attributes for the Date of Birth input
+			dobField.min = minDobDate.toISOString().split("T")[0];
+			dobField.max = maxDobDate.toISOString().split("T")[0];
+
+			// Event listener to update the Joining Date based on Date of Birth selection
+			dobField.addEventListener('change', function() {
+				const dob = new Date(dobField.value);
+
+				if (!isNaN(dob.getTime())) { // Check if a valid date is selected
+					const minJoiningDate = new Date(dob);
+					minJoiningDate
+							.setFullYear(minJoiningDate.getFullYear() + 18); // Add 18 years to DOB
+
+					// Set the min date for the Joining Date field
+					joiningDateField.min = minJoiningDate.toISOString().split(
+							"T")[0];
+
+					// Set the max date for the Joining Date as today
+					joiningDateField.max = today.toISOString().split("T")[0];
+
+					// If the currently selected joining date is before the minJoiningDate, reset it
+					if (new Date(joiningDateField.value) < minJoiningDate) {
+						joiningDateField.value = ''; // Reset the Joining Date value if invalid
+					}
+				}
+			});
+
+			// Ensure the calendar opens up to the max date (18 years before today) for Date of Birth field
+			dobField.addEventListener('click', function() {
+				const selectedDob = new Date(dobField.value);
+				if (selectedDob > maxDobDate) {
+					dobField.value = maxDobDate.toISOString().split("T")[0];
+				}
+			});
+		});
+	</script>
+ -->
+
+
+
+
+	<!--  -->
+
+</body>
+</html>

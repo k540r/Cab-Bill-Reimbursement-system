@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Registration Successful</title>
+
+  <!-- General CSS Files -->
+<link rel="stylesheet" th:href="@{/assets/modules/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/fontawesome/css/all.min.css}">
+
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <!-- CSS Libraries -->
+
+ <link rel="stylesheet" th:href="@{/assets/modules/jquery-selectric/selectric.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/bootstrap-daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/select2/dist/css/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css}">
+
+  <!-- Template CSS -->
+ <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/components.css}">
+
+</head>
+
+<body>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-2">
+        <div class="row">
+          <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+            <div class="login-brand">
+              <img th:src="@{/assets/img/bisag_logo.png}" alt="logo" width="280" height="150">
+            </div>
+
+            <div class="card card-primary">
+              <div class="card-header"><h3 style="text-align: center;"><b>Registration Successful</b></h3></div>
+
+              <div class="card-body">
+               <button type="button" th:text="${success}" class="btn btn-success"></button>
+    			<h4>Your username is: <button type="button" class="btn btn-warning" th:text="${username}"></button> <span ></span></h4>
+              </div>
+            </div>
+            <div class="text-center" style="margin: 30px;">
+              Already Registred? <a th:href="@{/login}">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+   <!-- General JS Scripts -->
+   <div th:replace="footer.html:: general-script"></div>
+
+</body>
+</html>

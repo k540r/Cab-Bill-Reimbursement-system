@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+	name="viewport">
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+<title>Registered Employee</title>
+
+<!-- General CSS Files -->
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/fontawesome/css/all.min.css}">
+
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200"
+	rel="stylesheet" />
+<!-- CSS Libraries -->
+
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/jquery-selectric/selectric.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-daterangepicker/daterangepicker.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/select2/dist/css/select2.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets_1/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css}">
+
+<!-- Template CSS -->
+<link rel="stylesheet" th:href="@{/assets_1/css/style.css}">
+<link rel="stylesheet" th:href="@{/assets_1/css/components.css}">
+
+</head>
+
+<body>
+	<div id="app">
+		<section class="section">
+			<div class="container mt-2">
+				<div class="row">
+					<div
+						class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+						<div class="login-brand">
+							<img th:src="@{/assets_1/img/bisag_logo.png}" alt="logo"
+								width="280" height="150">
+						</div>
+
+						<div class="card card-primary">
+							<div class="card-header">
+								<h3 style="text-align: center;">
+									<b>Registered Employee</b>
+								</h3>
+							</div>
+
+							<div class="card-body">
+								
+								<form action="#" th:action="@{/admin/commonDash}"
+									th:object="${employee}" method="get">
+
+									<div class="row">
+										<div class="form-group col-12">
+											<label for="first_name">Full Name<span
+												class="text-danger">*</span></label> <input id="full_name"
+												type="text" class="form-control" th:value="*{full_name}"
+												disabled>
+										</div>
+
+
+										
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="email">Email<span class="text-danger">*</span></label>
+											<input id="email" type="email" class="form-control"
+												th:value="*{email}" disabled>
+											<div class="invalid-feedback">Please fill in the email
+											</div>
+										</div>
+										<div class="form-group col-6">
+											<label>Job Title<span class="text-danger">*</span></label> <select
+												class="form-control selectric" id="jobTitle"
+												th:field="*{jobTitle}" disabled>
+												<option value="">Select Job Title</option>
+												<option value="Software Developer">Software
+													Developer</option>
+												<option value="Java Developer">Java Developer</option>
+												<option value="Software Analyst">Software Analyst</option>
+												<option value="Quality Analyst">Quality Analyst</option>
+												<option value="Assistant Project Manager">Assistant
+													Project Manager</option>
+												<option value="Project Manager">Project Manager</option>
+												<option value="Intern">Intern</option>
+												<option value="Legal Admin">Legal Admin</option>
+
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="contact_number">Contact Number<span
+												class="text-danger">*</span></label> <input id="contact_number"
+												type="tel" class="form-control" th:value="*{contact_number}"
+												oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,15);"
+												disabled>
+										</div>
+										<div class="form-group col-6">
+											<label for="eme_contact_number">Emergency Contact
+												Number</label> <input id="eme_contact_number" type="tel"
+												class="form-control" th:value="*{eme_contact_number}"
+												oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,15);"
+												disabled>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Date of Birth<span class="text-danger">*</span></label>
+											<input class="form-control" type="date" id="dateOfBirth"
+												th:value="*{dateOfBirth}" disabled>
+											<div class="invalid-feedback">Please select DOB</div>
+										</div>
+										<div class="form-group col-6">
+											<label>Gender<span class="text-danger">*</span></label> <select
+												class="form-control selectric" id="gender"
+												th:field="*{gender}" disabled>
+												<option value="">Select Gender</option>
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Blood Group</label> <select
+												class="form-control selectric" id="bloodGroup"
+												th:field="*{bloodGroup}" disabled>
+												<option value="">Select Blood Group</option>
+												<option value="AB+">AB+</option>
+												<option value="AB-">AB-</option>
+												<option value="O+">O+</option>
+												<option value="O-">O-</option>
+												<option value="A+">A+</option>
+												<option value="A-">A-</option>
+												<option value="B+">B+</option>
+												<option value="B-">B-</option>
+											</select>
+										</div>
+										<div class="form-group col-6">
+											<label>Marital Status<span class="text-danger">*</span></label>
+											<select class="form-control selectric" id="maritalStatus"
+												th:field="*{maritalStatus}" disabled>
+												<option value="">Select Marital Status</option>
+												<option value="Single">Single</option>
+												<option value="Married">Married</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label for="aadhar_number">Aadhaar Card Number</label> <input
+												id="aadharNumber" type="text" class="form-control"
+												th:value="*{aadharNumber}"
+												oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,12);"
+												disabled>
+										</div>
+										<div class="form-group col-6">
+											<label>Hometown</label> <select
+												class="form-control selectric" id="hometown"
+												th:field="*{hometown}" disabled>
+												<option value="">Select State or Union Territory</option>
+												<option value="Andhra Pradesh">Andhra Pradesh</option>
+												<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+												<option value="Assam">Assam</option>
+												<option value="Bihar">Bihar</option>
+												<option value="Chhattisgarh">Chhattisgarh</option>
+												<option value="Goa">Goa</option>
+												<option value="Gujarat">Gujarat</option>
+												<option value="Haryana">Haryana</option>
+												<option value="Himachal Pradesh">Himachal Pradesh</option>
+												<option value="Jharkhand">Jharkhand</option>
+												<option value="Karnataka">Karnataka</option>
+												<option value="Kerala">Kerala</option>
+												<option value="Madhya Pradesh">Madhya Pradesh</option>
+												<option value="Maharashtra">Maharashtra</option>
+												<option value="Manipur">Manipur</option>
+												<option value="Meghalaya">Meghalaya</option>
+												<option value="Mizoram">Mizoram</option>
+												<option value="Nagaland">Nagaland</option>
+												<option value="Odisha">Odisha</option>
+												<option value="Punjab">Punjab</option>
+												<option value="Rajasthan">Rajasthan</option>
+												<option value="Sikkim">Sikkim</option>
+												<option value="Tamil Nadu">Tamil Nadu</option>
+												<option value="Telangana">Telangana</option>
+												<option value="Tripura">Tripura</option>
+												<option value="Uttar Pradesh">Uttar Pradesh</option>
+												<option value="Uttarakhand">Uttarakhand</option>
+												<option value="West Bengal">West Bengal</option>
+												<option value="Andaman and Nicobar Islands">Andaman
+													and Nicobar Islands</option>
+												<option value="Chandigarh">Chandigarh</option>
+												<option value="Dadra and Nagar Haveli and Daman and Diu">Dadra
+													and Nagar Haveli and Daman and Diu</option>
+												<option value="Delhi">Delhi</option>
+												<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+												<option value="Ladakh">Ladakh</option>
+												<option value="Lakshadweep">Lakshadweep</option>
+												<option value="Puducherry">Puducherry</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-12">
+											<label for="currentAddress">Current Address</label>
+											<textarea id="currentAddress" class="form-control"
+												th:field="*{currentAddress}" disabled></textarea>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Joining Date<span class="text-danger">*</span></label>
+											<input class="form-control" type="date" id="joiningDate"
+												th:value="*{joiningDate}" disabled>
+										</div>
+										<div class="form-group col-6">
+											<label>Agency<span class="text-danger">*</span></label> <select
+												class="form-control selectric" id="agency"
+												th:field="*{agency}" disabled>
+												<option value="">Select Agency</option>
+												<option value="Ethos HR Management and Projects">Ethos
+													HR Management and Projects</option>
+												<option value="Other">Other</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-6">
+											<label>Department<span class="text-danger">*</span></label> <select
+												class="form-control selectric" id="department"
+												th:field="*{department}" disabled>
+												<option value="">Select Department</option>
+												<option value="DEFENCE">DEFENCE</option>
+												<option value="SOFTWARE">SOFTWARE</option>
+												<option value="GIS">GIS</option>
+												<option value="SATCOM">SATCOM</option>
+												<option value="ADMINISTRATION">ADMINISTRATION</option>
+												<option value="PM GATI SHAKTI">PM GATI SHAKTI</option>
+											</select>
+										</div>
+										<div class="form-group col-6">
+											<label>Reporting Personnel</label> <select
+												class="form-control selectric" id="reporting_per"
+												th:field="*{reporting_per}" disabled>
+												<option value="">Select Manager</option>
+												<option value="Gunjan Kanwar">Gunjan Kanwar</option>
+												<option value="kanak Agrawal">Kanak Agrawal</option>
+											</select>
+										</div>
+									</div>
+
+									
+
+									<div class="form-group">
+										<button type="submit" class="btn btn-primary btn-lg btn-block">Close</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	
+	<!-- general js script replace -->
+
+	 <div th:replace="footer.html:: general-script"></div>
+	
+
+</body>
+</html>

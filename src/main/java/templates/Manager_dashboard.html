@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Meta -->
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+
+<!-- Title -->
+<title>BISAG-N Manager Dashboard</title>
+
+<!-- *************
+         ************ Common Css Files *************
+         ************ -->
+
+<!-- Animated css -->
+<th:block th:replace="Header.html::allcsslink"></th:block>
+
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<style>
+input:autofill {
+	box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+}
+</style>
+</head>
+
+<body>
+
+	<!-- Loading wrapper start -->
+	<div id="loading-wrapper">
+		<div class="spinner">
+			<div class="line1"></div>
+			<div class="line2"></div>
+			<div class="line3"></div>
+			<div class="line4"></div>
+			<div class="line5"></div>
+			<div class="line6"></div>
+		</div>
+	</div>
+	<!-- Loading wrapper end -->
+
+	<!-- Page wrapper start -->
+	<div class="page-wrapper">
+
+		<!-- Sidebar wrapper start -->
+		<nav class="sidebar-wrapper">
+
+			<!-- Sidebar brand starts -->
+			<div class="sidebar-brand">
+				<a href="managerDash" class="logo"> <img
+					th:src="@{/assets/images/bisag_logo.png}" alt="Manager_dashboard" />
+				</a>
+			</div>
+			<!-- Sidebar brand starts -->
+
+
+
+			<!-- Sidebar menu starts -->
+			<div class="sidemenu-bar" th:insert="Header.html::Manager-sidebar-menu"></div>
+
+			<!-- Sidebar menu ends -->
+
+		</nav>
+		<!-- Sidebar wrapper end -->
+
+		<!-- *************
+                    ************ Main container start *************
+                ************* -->
+		<div class="main-container">
+
+			<!-- Page header starts -->
+			<div class="page-header" th:replace="Header.html::admin-page-header"></div>
+			<!-- Page header ends -->
+
+			<!-- Content wrapper scroll start -->
+			<div class="content-wrapper-scroll">
+
+				<!-- Content wrapper start -->
+				<div class="content-wrapper">
+
+					<!-- Add your form here -->
+
+
+
+
+					<!-- Card start -->
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">New Project Form</div>
+						</div>
+						<div class="card-body">
+							<form th:action="@{/manager/addProject}" method="post"
+								th:object="${project}">
+								<div class="row">
+									
+									<div class="col-xl-6 col-sm-12 col-12">
+										<div class="mb-3">
+											<label for="projectName" class="form-label">Project
+												Name</label> <input type="text" class="form-control"
+												th:field="*{projectName}" id="projectName"
+												name="projectName" placeholder="Enter project name" required>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+									
+									
+									<div class="col-xl-6 col-sm-12 col-12">
+										<div class="mb-3">
+											<label for="projectDesc" class="form-label">Project
+												Description</label>
+											<textarea class="form-control" th:field="*{projectDesc}"
+												id="projectDesc" name="projectDesc"
+												placeholder="Enter project description" required></textarea>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="col-xl-6 col-sm-12 col-12">
+										<div class="mb-3">
+											<label for="clientName" class="form-label">Client
+												Name</label> <input type="text" class="form-control"
+												th:field="*{clientName}" id="clientName" name="clientName"
+												placeholder="Enter client name" required>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="col-xl-6 col-sm-12 col-12">
+										<div class="mb-3">
+											<label for="startDate" class="form-label">Start Date</label>
+											<input type="date" class="form-control"
+												th:field="*{startDate}" name="startDate" id="startDate"
+												placeholder="Enter start date" required>
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+
+									<div class="col-12 d-flex justify-content-end">
+										<button type="submit" class="btn btn-success">Add
+											Project</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+
+
+
+
+
+					<!-- Row start -->
+					<div class="row">
+						<div class="col-xxl-12  col-sm-12 col-12">
+
+							<div class="card">
+								<div class="card-body">
+
+
+									<!-- Datatable displaying all the projects of the logged-in employee -->
+									<div class="table-responsive">
+										<table id="projectTable" class="table custom-table">
+											<thead>
+												<tr>
+													<th>S. No.</th> 
+													<!-- <th>Project id</th> -->													
+													<th>Project Name</th>
+													<th>Project Desc</th>
+													<th>Client Name</th>
+													<th>Start Date</th>
+													<th class="actions">Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="project : ${projects}">
+													 <td class="row-id"></td> 
+													<!-- <td th:text="${project.id}"></td> -->
+													<td th:text="${project.projectName}"></td>
+													<td th:text="${project.projectDesc}"></td>
+													<td th:text="${project.clientName}"></td>
+													<td th:text="${project.startDate}"></td>
+													<td><a href="javascript:void(0)"
+														data-bs-toggle="modal" data-bs-target="#addEmployeeModal"
+														th:data-project-id="${project.id}"
+														th:data-project-name="${project.projectName}"
+														th:data-client-name="${project.clientName}"> <i
+															class="bi bi-plus-circle text-blue" title="Add Member"></i>
+													</a> <a href="javascript:void(0)" data-bs-toggle="modal"
+														data-bs-target="#manageEmployeesModal"
+														th:data-project-id="${project.id}"
+														th:data-project-name="${project.projectName}"
+														th:data-client-name="${project.clientName}"> <i
+															class="bi bi-eye text-yellow" title="View Member"></i>
+													</a> <!-- <a th:href="@{/manager/pdfView/{id}(id=${project.id})}"
+														target="_blank"><i class="bi bi-file-earmark-pdf"></i></a> -->
+														<a
+														th:href="@{/manager/clientVisitManager/{projectId}(projectId=${project.id})}"
+														title="View Client Visit"> <i
+															class="bi bi-eye text-blue"></i>
+													</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+
+
+
+				<!-- Modal for Adding Employee to Project -->
+				<div class="modal fade" id="addEmployeeModal" tabindex="-1"
+					aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="addEmployeeModalLabel">Add
+									Employee to Project</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<h4 class="mb-3">
+									<strong class="fs-5">Project Name:</strong> <span
+										id="modalProjectName" class="fs-6"></span>
+								</h4>
+								<h4 class="mb-3">
+									<strong class="fs-5">Client Name:</strong> <span
+										id="modalClientName" class="fs-6"></span>
+								</h4>
+
+								<!-- Hidden field to store the project ID -->
+								<input type="hidden" id="modalProjectId" />
+
+								<!-- Search and add employees here -->
+								<div class="form-group">
+									<label for="employeeSearch">Search Employee</label> <input
+										type="text" class="form-control" id="employeeSearch"
+										placeholder="Enter employee name">
+								</div>
+
+								<!-- List of matching employees -->
+								<ul class="list-group" id="employeeList"></ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!-- Modal for Managing Employees in Project -->
+				<div class="modal fade" id="manageEmployeesModal" tabindex="-1"
+					aria-labelledby="manageEmployeesModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="manageEmployeesModalLabel">Manage
+									Employees in Project</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<h4 class="mb-3">
+									<strong class="fs-5">Project Name:</strong> <span
+										id="manageModalProjectName" class="fs-6"></span>
+								</h4>
+								<h4 class="mb-3">
+									<strong class="fs-5">Client Name:</strong> <span
+										id="manageModalClientName" class="fs-6"></span>
+								</h4>
+
+								<!-- Hidden field to store the project ID -->
+								<input type="hidden" id="manageModalProjectId" />
+
+								<!-- List of employees -->
+								<ul class="list-group" id="manageEmployeeList">
+									<!-- Dynamically populated employee list will appear here -->
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<!-- Content wrapper end -->
+
+				<!-- App Footer start -->
+				<div class="app-footer" th:insert="footer.html::footer"></div>
+				<!-- App footer end -->
+
+			</div>
+			<!-- Content wrapper scroll end -->
+
+		</div>
+		<!-- *************
+                ************ Main container end *************
+            ************* -->
+
+		<!-- Page wrapper end -->
+
+		<div th:replace="Header.html::manager-changePasswordmodal"></div>
+
+		<form th:action="@{/logout}" method="post" id="logoutForm"
+			name="logoutForm"></form>
+
+
+		<!-- DataTables JS script -->
+		<script>
+			$(document).ready(function() {
+				$('#projectTable').DataTable({
+					"paging" : true,
+					"searching" : true,
+					"ordering" : true,
+					"info" : true
+				});
+			});
+		</script>
+		
+		
+		
+		
+		
+		
+
+
+
+		<!-- Required JavaScript Files -->
+	<!-- 	<script th:src="@{/assets/js/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/assets/js/modernizr.js}"></script>
+		<script th:src="@{/assets/js/moment.js}"></script>
+ -->
+		<!-- Vendor Js Files -->
+		<div th:replace="footer.html::common-scripts"></div>
+
+
+		<script>
+
+      document.addEventListener("DOMContentLoaded", function () {
+              const table = document.getElementById("projectTable");
+              const rows = table.querySelectorAll("tbody tr"); 
+              const alert = document.querySelector('.alert');
+
+               rows.forEach((row, index) => {
+                      row.querySelector(".row-id").textContent = index + 1; // Starting ID from 1
+              }); 
+      
+      
+      if (alert) {
+          setTimeout(() => {
+              alert.style.display = 'none';
+          }, 3000); // Hide after 3 seconds
+      }
+      });
+</script>
+
+		<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var addEmployeeModal = document.getElementById('addEmployeeModal');
+    var manageEmployeesModal = document.getElementById('manageEmployeesModal');
+    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    // Handle Add Employee Modal
+    addEmployeeModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var projectId = button.getAttribute('data-project-id');
+        var projectName = button.getAttribute('data-project-name');
+        var clientName = button.getAttribute('data-client-name');
+
+        var modalProjectId = addEmployeeModal.querySelector('#modalProjectId');
+        var modalProjectName = addEmployeeModal.querySelector('#modalProjectName');
+        var modalClientName = addEmployeeModal.querySelector('#modalClientName');
+
+        modalProjectId.value = projectId;
+        modalProjectName.textContent = projectName;
+        modalClientName.textContent = clientName;
+    });
+
+    // Handle Manage Employees Modal
+    manageEmployeesModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var projectId = button.getAttribute('data-project-id');
+        var projectName = button.getAttribute('data-project-name');
+        var clientName = button.getAttribute('data-client-name');
+
+        var modalProjectId = manageEmployeesModal.querySelector('#manageModalProjectId');
+        var modalProjectName = manageEmployeesModal.querySelector('#manageModalProjectName');
+        var modalClientName = manageEmployeesModal.querySelector('#manageModalClientName');
+
+        modalProjectId.value = projectId;
+        modalProjectName.textContent = projectName;
+        modalClientName.textContent = clientName;
+
+        fetchEmployees(projectId);
+    });
+
+    // Search for Employees
+    var employeeSearch = document.getElementById('employeeSearch');
+    employeeSearch.addEventListener('input', function() {
+        var searchName = this.value.toLowerCase();
+        var searchTerm = searchName.split(' ').map(function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
+
+        var employeeList = document.getElementById('employeeList');
+        employeeList.innerHTML = ''; // Clear the list
+
+        var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+
+        fetch(`${contextPath}/manager/employeeData?search=${searchTerm}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(employees => {
+                employees.forEach(employee => {
+                    var listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.textContent = employee.full_name;
+                    listItem.setAttribute('data-employee-id', employee.id);
+                    listItem.setAttribute('data-employee-name', employee.full_name);
+
+                    var addButton = document.createElement('button');
+                    addButton.className = 'btn btn-sm btn-success';
+                    addButton.textContent = 'Add';
+                    addButton.addEventListener('click', function() {
+                        var projectId = document.getElementById('modalProjectId').value;
+                        var employeeName = this.parentElement.getAttribute('data-employee-name');
+                        var employeeId = this.parentElement.getAttribute('data-employee-id');
+
+                        var data = {
+                            projectId: projectId,
+                            employeeName: employeeName,
+                            employeeId: employeeId
+                        };
+
+                        fetch(`${contextPath}/manager/addEmployeeToProject`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                [csrfHeader]: csrfToken
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(responseData => {
+                            if (responseData.message) {
+                                alert(responseData.message);
+                                if (responseData.message === 'Employee added successfully') {
+                                    this.parentElement.remove();
+                                }
+                            } else {
+                                alert('Failed to add employee.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                    });
+
+                    listItem.appendChild(addButton);
+                    employeeList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    // Fetch Employees for Manage Employees Modal
+    function fetchEmployees(projectId) {
+        var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+
+        fetch(`${contextPath}/manager/employeesByProject/${projectId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(employeeData => {
+                var employeeList = document.getElementById('manageEmployeeList');
+                employeeList.innerHTML = '';
+
+                if (Array.isArray(employeeData)) {
+                    employeeData.forEach(employee => {
+                        var listItem = document.createElement('li');
+                        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        listItem.textContent = employee.fullName || 'No Name';
+
+                        var removeButton = document.createElement('button');
+                        removeButton.className = 'btn btn-sm btn-danger';
+                        removeButton.textContent = 'Remove';
+                        removeButton.setAttribute('data-employee-id', employee.employeeId);
+
+                        removeButton.addEventListener('click', function() {
+                            var employeeId = this.getAttribute('data-employee-id');
+                            removeEmployee(projectId, employeeId);
+                        });
+
+                        listItem.appendChild(removeButton);
+                        employeeList.appendChild(listItem);
+                    });
+                } else {
+                    console.error('Unexpected data format:', employeeData);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the employees:', error);
+            });
+    }
+
+    // Remove Employee from Project
+    function removeEmployee(projectId, employeeId) {
+    	 if (confirm("Are you sure you want to remove this employee from the project?")) {
+        var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+
+        fetch(`${contextPath}/manager/removeEmployeeFromProject?projectId=${projectId}&employeeId=${employeeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error(`Error ${response.status}: ${text}`);
+                    throw new Error('Network response was not ok');
+                });
+            }
+            return response.text();
+        })
+        .then(message => {
+            console.log('Server message:', message);
+            alert(message);
+            fetchEmployees(projectId);
+            
+        })
+        .catch(error => {
+            console.error('There was a problem removing the employee:', error);
+        });
+    	 }
+    }
+});
+</script>
+</body>
+
+</html>

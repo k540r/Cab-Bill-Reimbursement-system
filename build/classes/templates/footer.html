@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body >
+	<div class="app-footer" th:fragment="footer"  >
+		<span>© BISAG-N 2024</span>
+		
+	</div>
+	
+	
+	 <!-- Common Script Files Fragment -->
+	<th:block th:fragment="common-scripts">
+
+		<!-- Required jQuery first, then Bootstrap Bundle JS -->
+		<script th:src="@{/assets/js/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/assets/js/modernizr.js}"></script>
+		<script th:src="@{/assets/js/moment.js}"></script>
+       
+        <!-- -overlayscroll js -->
+
+		<script
+			th:src="@{/assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js}"></script>
+		<script th:src="@{/assets/vendor/overlay-scroll/custom-scrollbar.js}"></script>
+
+		<!-- Data Tables -->
+		<script th:src="@{/assets/vendor/datatables/dataTables.min.js}"></script>
+		<script
+			th:src="@{/assets/vendor/datatables/dataTables.bootstrap.min.js}"></script>
+
+		<!-- Custom Data tables -->
+		<script
+			th:src="@{/assets/vendor/datatables/custom/custom-datatables.js}"></script>
+
+		<!-- Main Js Required -->
+		<script th:src="@{/assets/js/main.js}"></script>
+		<script th:src="@{/js/common.js}"></script>
+		<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	
+	    
+	   
+	
+	</th:block>
+	
+	<th:block th:fragment="general-script">
+	
+	<!-- General JS Scripts -->
+	 <!-- General JS Scripts -->
+	<script th:src="@{/assets_1/modules/jquery.min.js}"></script>
+	<script th:src="@{/assets_1/modules/popper.js}"></script>
+	<script th:src="@{/assets_1/modules/bootstrap/js/bootstrap.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/nicescroll/jquery.nicescroll.min.js}"></script>
+	<script th:src="@{/assets_1/modules/moment.min.js}"></script>
+	<!--   <script th:src="@{/assets/js/stisla.js}"></script> -->
+
+	<!-- JS Libraries -->
+	<script
+		th:src="@{/assets_1/modules/jquery-pwstrength/jquery.pwstrength.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/jquery-selectric/jquery.selectric.min.js}"></script>
+	<script th:src="@{/assets_1/modules/cleave-js/dist/cleave.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/cleave-js/dist/addons/cleave-phone.us.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/bootstrap-daterangepicker/daterangepicker.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js}"></script>
+	<script
+		th:src="@{/assets_1/modules/select2/dist/js/select2.full.min.js}"></script>
+	    
+	
+	</th:block>
+	
+	
+
+
+
+</body>
+</html>

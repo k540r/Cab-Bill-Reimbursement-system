@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<title>Dashboard - BISAG-N</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<meta name="context-path" th:content="@{/}"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+<link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+<link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+
+<script>
+    // Session timeout countdown
+    var sessionTimeout = 600; // 10 minutes in seconds
+    function startCountdown() {
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            var minutes = Math.floor(sessionTimeout / 60);
+            var seconds = sessionTimeout % 60;
+            countdownElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            sessionTimeout--;
+            if (sessionTimeout < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('logoutForm').submit(); // Automatically submit the logout form when the session expires
+            }
+        }, 1000);
+    }
+    function updateCurrentDate() {
+        var today = new Date();
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        var formattedDate = today.toLocaleDateString('en-US', options);
+        document.getElementById('currentDate').textContent = formattedDate;
+    }
+    $(document).ready(function() {
+    	startCountdown();
+        updateCurrentDate(); // Call any function or logic you want to run when the document is ready
+    });
+   // window.onload = updateCurrentDate;
+</script>
+
+</head>
+<body>
+<header id="header">
+    <div class="container d-flex">
+        <div class="logo me-auto">
+            <a href="#"><img th:src="@{/assets/img/logo.png}" alt="" class="img-fluid"></a>
+        </div>
+        <div class="header-social-links d-flex align-items-center me-5">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+        <div class="d-flex align-items-center">       
+            <a href="#"><img th:src="@{/assets/img/EmblemImage.png}" alt="" class="img-fluid"></a>
+            <a href="#"><img th:src="@{/assets/img/g20-logo.png}" alt="" class="img-fluid"></a>
+        </div>
+    </div>
+    <div id="YrnavBar" class="yr-nav-bg">
+        <div class="container d-flex">
+            <nav id="navbar" class="navbar order-last order-lg-0 me-lg-auto">
+                <ul>
+                    <li><a class="nav-link active" th:href="@{/}">Home</a></li>
+                    <li>
+                     <form id="logoutForm" th:action="@{/logout}" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <a href="javascript:{}" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                            
+                        </form>
+                    </li>
+                     <li><a class="nav-link mr-3" id="currentDate" ></a></li>
+                    <li class="justify-content-end"><a class="nav-link" id="countdown">10:00</a></li>
+                </ul>
+                
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+    <section class="dashboard">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Welcome to your Dashboard</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer id="footer">
+    <div class="container">
+        <div class="copyright">
+            &copy; 2024 <strong><span>BISAG-N</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            Designed by <a href="#">BISAG-N</a>
+        </div>
+    </div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+<div th:replace="footer.html:: common-scripts"></div>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

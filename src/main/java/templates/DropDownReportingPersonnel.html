@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Meta -->
+
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+
+<!-- Title -->
+<title>Master Control</title>
+
+<!-- *************
+			************ Common Css Files *************
+		************ -->
+<!-- Animated css -->
+<th:block th:replace="Header.html::allcsslink"></th:block>
+
+<style>
+input:autofill {
+	box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+}
+</style>
+<script type="text/javascript">
+	// Define the context path in JavaScript
+	var contextPath = /*[[${#httpServletRequest.contextPath}]]*/'';
+</script>
+
+</head>
+
+<body>
+
+
+	<!-- Page wrapper start -->
+	<div class="page-wrapper">
+
+		<!-- Sidebar wrapper start -->
+		<nav class="sidebar-wrapper">
+
+			<!-- Sidebar brand starts -->
+			<div class="sidebar-brand">
+				<a href="commonDash" class="logo"> <img
+					th:src="@{/assets/images/bisag_logo.png}" alt="Admin Dashboards" />
+				</a>
+			</div>
+			<!-- Sidebar brand starts -->
+
+			<!-- Sidebar menu starts -->
+			<div class="sidebar-menu"
+				th:insert="Header.html::Admin-sidemnubar"></div>
+
+			<!-- Sidebar menu ends -->
+
+		</nav>
+		<!-- Sidebar wrapper end -->
+
+		<!-- *************
+				************ Main container start *************
+			************* -->
+		<div class="main-container">
+
+			<!-- Page header starts -->
+			<div class="page-header">
+
+				<div class="toggle-sidebar" id="toggle-sidebar">
+					<i class="bi bi-list"></i>
+				</div>
+
+
+
+				<!-- Header actions ccontainer start -->
+				<div class="header-actions-container">
+
+					<!-- Header actions start -->
+					<ul class="header-actions">
+						<li class="dropdown"><a href="#" id="userSettings"
+							class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+								
+								<span class="avatar"> <img
+							th:src="@{${profilePicturePath}}" alt="Admin Templates"> <span
+							class="status online"></span>
+						</a>
+							<div class="dropdown-menu dropdown-menu-end"
+								aria-labelledby="userSettings">
+								<div class="header-profile-actions">
+									<a href="profile.html">Profile</a> <a
+										href="account-settings.html">Settings</a> <a href="#"
+										data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+										Password</a><a href="javascript:void(0)" id="logoutF">Logout</a>
+								</div>
+							</div></li>
+					</ul>
+					<!-- Header actions end -->
+
+				</div>
+				<!-- Header actions ccontainer end -->
+
+			</div>
+			<!-- Page header ends -->
+
+			<!-- Content wrapper scroll start -->
+			<div class="content-wrapper-scroll">
+
+				<!-- Content wrapper start -->
+				<div class="content-wrapper">
+
+
+					<!-- Row end -->
+
+					<div class="content-wrapper-scroll">
+						<!-- Content wrapper start -->
+						<div class="content-wrapper">
+							<!-- Row start -->
+							<div class="row">
+								<div class="col-sm-12 col-12">
+
+									<!-- Card start -->
+									<div class="card">
+										<div class="card-header">
+											<div class="card-title">
+												<h4>Dynamic Master Reporting Personnel Selection</h4>
+											</div>
+										</div>
+										<div class="card-body">
+											<div class="row mb-4">
+												<div class="col-md-12">
+													<h4>Add Item</h4>
+													<form th:action="@{/admin/adminReportingPersonnel/addItem}"
+														method="post" th:object="${newItem1}" class="form-inline">
+														<div class="form-group mr-2">
+															<label id="lab" class="mr-2">Name</label> <input
+																type="text" th:field="*{name}" required
+																class="form-control" />
+														</div>
+														<button id="add" type="submit" class="btn btn-success">Add</button>
+													</form>
+												</div>
+											</div>
+
+											<div class="row mb-4">
+												<div class="col-md-12">
+													<h4>Filter by Date & Time</h4>
+													<form th:action="@{/admin/filterReportingPersonnel}"
+														method="get" class="form-inline">
+														<div class="form-group mr-2">
+															<label for="startDate" class="mr-2">Start Date:</label> <input
+																type="datetime-local" id="startDate" name="startDate"
+																required class="form-control" />
+														</div>
+														<div class="form-group mr-2">
+															<label for="endDate" class="mr-2">End Date:</label> <input
+																type="datetime-local" id="endDate" name="endDate"
+																required class="form-control" />
+														</div>
+														<button type="submit" class="btn btn-primary">Filter</button>
+													</form>
+												</div>
+
+
+
+											</div>
+										</div>
+
+
+										<!-- Card end -->
+
+
+
+										<!-- Row start -->
+										<div class="row">
+											<div class="col-xxl-12  col-sm-12 col-12">
+
+												<div class="card">
+													<div class="card-body">
+
+														<!-- Row start -->
+														<div class="table-responsive">
+															<table id="reportingPersonnel" class="table custom-table">
+																<thead>
+																	<tr>
+																		<th>ID</th>
+																		<th>Name</th>
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="item : ${dropdownItems}">
+																		<td th:text="${item.id}"></td>
+																		<td th:text="${item.name}"></td>
+																		<td><a class="edit-btn" href="#"
+																			data-toggle="modal" data-target="#editModal"
+																			th:data-id="${item.id}" th:data-name="${item.name}"><i
+																				class="bi bi-eye text-blue"></i> </a> <a
+																			class="delete-btn" href="#" th:data-id="${item.id}">
+																				<i class="bi bi-trash text-red"></i>
+																		</a>
+																	</tr>
+																</tbody>
+
+															</table>
+														</div>
+														<!-- Row end -->
+
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+										<!-- Row end -->
+
+
+										<!-- Edit Modal Fade -->
+										<div class="modal fade" id="editModal" tabindex="-1"
+											aria-labelledby="editModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="editModalLabel">Edit Item</h5>
+														<button type="button" class="btn-close"
+															data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<form id="editForm"
+															th:action="@{/admin/adminReportingPersonnel/updateItemReportingPersonnel}"
+															method="post">
+															<input type="hidden" id="editId" name="id" />
+															<div class="mb-3">
+																<label for="editName" class="form-label">Name:</label> <input
+																	type="text" class="form-control" id="editName"
+																	name="name" required />
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-dark"
+															data-bs-dismiss="modal">Close</button>
+														<button type="button" class="btn btn-success"
+															onclick="submitEditForm()">Save changes</button>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<!-- Content wrapper end -->
+
+									<!-- App Footer start -->
+									<div class="app-footer" th:insert="footer.html::footer"></div>
+
+									<!-- App footer end -->
+
+								</div>
+								<!-- Content wrapper scroll end -->
+
+							</div>
+							<!-- *************
+				************ Main container end *************
+			************* -->
+
+							<div th:replace="Header.html::changePasswordmodal"></div>
+							<!-- Page wrapper end -->
+							<form th:action="@{/logout}" method="post" id="logoutForm"
+								name="logoutForm"></form>
+							<!-- *************
+			************ Required JavaScript Files ************* -->
+							<div th:replace="footer.html:: common-scripts"></div>
+
+           
+							<script type="text/javascript">
+								$(document).ready(function() {
+									// Edit modal setup
+									$('.edit-btn').on('click', function() {
+										var id = $(this).data('id');
+										var name = $(this).data('name');
+
+										// Set values in the form
+										$('#editId').val(id);
+										$('#editName').val(name);
+
+										// Show the modal
+										$('#editModal').modal('show');
+									});
+
+									// Function to submit the edit form
+									window.submitEditForm = function() {
+										$('#editForm').submit();
+									};
+
+								});
+							</script>
+
+							<script>
+								$(document).ready(function() {
+									// Initialize DataTables on the specified table
+									$('#reportingPersonnel').DataTable({
+										"paging" : true, // Enable pagination
+										"searching" : true, // Enable search filter
+										"ordering" : true, // Enable column sorting
+										"lengthMenu" : [ 5, 10, 25, 50 ], // Control how many records per page
+										"pageLength" : 5, // Default number of records per page
+										"order" : [ [ 0, 'desc' ] ]
+									// Order by the first column (ID) in descending order
+									});
+								});
+							</script>
+
+							<script type="text/javascript">
+								$(document)
+										.ready(
+												function() {
+													// Setup delete button click event
+													$('.delete-btn')
+															.on(
+																	'click',
+																	function(
+																			event) {
+																		event
+																				.preventDefault(); // Prevent the default link behavior
+
+																		var id = $(
+																				this)
+																				.data(
+																						'id');
+																		var deleteUrl = `adminReportingPersonnel/deleteItem/${id}`;
+
+																		// Confirm deletion with a custom prompt
+																		if (confirm('Are you sure you want to delete this item?')) {
+																			// Redirect to the delete URL
+																			window.location.href = deleteUrl;
+																		}
+																	});
+												});
+							</script>
+</body>
+</html>

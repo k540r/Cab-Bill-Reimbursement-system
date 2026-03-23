@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Meta -->
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+
+<!-- Title -->
+<title>BISAG-N Manager Dashboard</title>
+
+<!-- *************
+         ************ Common Css Files *************
+         ************ -->
+
+<!-- Animated css -->
+<th:block th:replace="Header.html::allcsslink"></th:block>
+
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<style>
+input:autofill {
+	box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+}
+</style>
+</head>
+
+<body>
+
+	<!-- Loading wrapper start -->
+	<div id="loading-wrapper">
+		<div class="spinner">
+			<div class="line1"></div>
+			<div class="line2"></div>
+			<div class="line3"></div>
+			<div class="line4"></div>
+			<div class="line5"></div>
+			<div class="line6"></div>
+		</div>
+	</div>
+	<!-- Loading wrapper end -->
+
+	<!-- Page wrapper start -->
+	<div class="page-wrapper">
+
+		<!-- Sidebar wrapper start -->
+		<nav class="sidebar-wrapper">
+
+			<!-- Sidebar brand starts -->
+			<div class="sidebar-brand">
+				<a href="managerDash" class="logo"> <img
+					th:src="@{/assets/images/bisag_logo.png}" alt="Manager_dashboard" />
+				</a>
+			</div>
+			<!-- Sidebar brand starts -->
+
+
+
+			<!-- Sidebar menu starts -->
+			<div class="sidebar-menu" th:insert="Header.html::side-menu-bar"></div>
+			<!-- Sidebar menu ends -->
+
+		</nav>
+		<!-- Sidebar wrapper end -->
+
+		<!-- *************
+                    ************ Main container start *************
+                ************* -->
+		<div class="main-container">
+
+			<!-- Page header starts -->
+			<div class="page-header" th:replace="Header.html::admin-page-header"></div>
+			<!-- Page header ends -->
+
+			<!-- Content wrapper scroll start -->
+			<div class="content-wrapper-scroll">
+
+				<!-- Content wrapper start -->
+				<div class="content-wrapper">
+
+					<!-- Add your form here -->
+
+
+
+
+					<!-- Card start -->
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">New Project Form</div>
+						</div>
+						<div class="card-body">
+							<form method="post" enctype="multipart/form-data"
+								th:action="@{/user/clientvisit}" th:object="${clientVisit}">
+								<!-- Hidden Fields for projectId and employeeId -->
+								<input type="hidden" name="projectId" th:value="${project.id}" />
+								<input type="hidden" name="employeeId" th:value="${employee.id}" />
+
+								<!-- Profile Picture Display -->
+								<div class="profile-picture">
+									<img th:src="${profilePicturePath}"
+										alt="Employee Profile Picture" class="img-thumbnail" />
+								</div>
+
+								<!-- Client Name -->
+								<div class="mb-3">
+									<label for="clientName" class="form-label">Client Name</label>
+									<input type="text" class="form-control"
+										th:field="*{clientName}" placeholder="Enter client's name"
+										required>
+								</div>
+
+								<!-- Purpose of Visit -->
+								<div class="mb-3">
+									<label for="purposeOfVisit" class="form-label">Purpose
+										of Visit</label> <input type="text" class="form-control"
+										th:field="*{purposeOfVisit}"
+										placeholder="Enter purpose of visit" required>
+								</div>
+
+								<!-- Date of Visit -->
+								<div class="mb-3">
+									<label for="dateOfVisit" class="form-label">Date of
+										Visit</label> <input type="date" class="form-control"
+										th:field="*{dateOfVisit}" required>
+								</div>
+
+								<!-- Upload MoM -->
+								<div class="mb-3">
+									<label for="momFile" class="form-label">Upload MoM</label> <input
+										type="file" class="form-control" id="momFile"
+										th:field="*{momFilePath}" accept=".pdf" required> <small
+										class="text-danger">Only .pdf files are allowed.</small>
+								</div>
+
+								<!-- Submit Button -->
+								<div class="text-end">
+									<button type="submit" class="btn btn-success">Submit</button>
+								</div>
+							</form>
+
+
+
+						</div>
+					</div>
+
+
+
+
+
+
+
+					<!-- Row start -->
+				<!-- 	<div class="row">
+						<div class="col-xxl-12  col-sm-12 col-12">
+
+							<div class="card">
+								<div class="card-body">
+
+
+									Datatable displaying all the projects of the logged-in employee
+									<div class="table-responsive">
+										<table id="projectTable" class="table custom-table">
+											<thead>
+												<tr>
+													<th>S. No.</th>
+													<th>Project id</th>
+													<th>Project Desc</th>
+													<th>Project Name</th>
+													<th>Client Name</th>
+													<th>Start Date</th>
+													<th class="actions">Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="project : ${projects}">
+													<td class="row-id"></td>
+													<td th:text="${project.id}"></td>
+													<td th:text="${project.projectDesc}"></td>
+													<td th:text="${project.projectName}"></td>
+													<td th:text="${project.clientName}"></td>
+													<td th:text="${project.startDate}"></td>
+													<td><a href="javascript:void(0)"
+														data-bs-toggle="modal" data-bs-target="#addEmployeeModal"
+														th:data-project-id="${project.id}"
+														th:data-project-name="${project.projectName}"
+														th:data-client-name="${project.clientName}"> <i
+															class="bi bi-plus-circle text-blue" title="Add Member"></i>
+													</a> <a href="javascript:void(0)" data-bs-toggle="modal"
+														data-bs-target="#manageEmployeesModal"
+														th:data-project-id="${project.id}"
+														th:data-project-name="${project.projectName}"
+														th:data-client-name="${project.clientName}"> <i
+															class="bi bi-eye text-yellow" title="View Member"></i>
+													</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+
+
+				</div>
+
+
+
+
+
+
+
+
+
+				<!-- Content wrapper end -->
+
+				<!-- App Footer start -->
+				<div class="app-footer" th:insert="footer.html::footer"></div>
+				<!-- App footer end -->
+
+			</div>
+			<!-- Content wrapper scroll end -->
+
+		</div>
+		<!-- *************
+                ************ Main container end *************
+            ************* -->
+
+		<!-- Page wrapper end -->
+
+		<div th:replace="Header.html::manager-changePasswordmodal"></div>
+
+		<form th:action="@{/logout}" method="post" id="logoutForm"
+			name="logoutForm"></form>
+
+
+		<!-- DataTables JS script -->
+		<script>
+			$(document).ready(function() {
+				$('#projectTable').DataTable({
+					"paging" : true,
+					"searching" : true,
+					"ordering" : true,
+					"info" : true
+				});
+			});
+		</script>
+
+
+
+
+		<!-- Required JavaScript Files -->
+		<script th:src="@{/assets/js/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/assets/js/modernizr.js}"></script>
+		<script th:src="@{/assets/js/moment.js}"></script>
+
+		<!-- Vendor Js Files -->
+		<div th:replace="footer.html::common-scripts"></div>
+
+
+		<script>
+
+      document.addEventListener("DOMContentLoaded", function () {
+              const table = document.getElementById("projectTable");
+              const rows = table.querySelectorAll("tbody tr");
+              const alert = document.querySelector('.alert');
+
+              rows.forEach((row, index) => {
+                      row.querySelector(".row-id").textContent = index + 1; // Starting ID from 1
+              });
+      
+      
+      if (alert) {
+          setTimeout(() => {
+              alert.style.display = 'none';
+          }, 3000); // Hide after 3 seconds
+      }
+      });
+</script>
+</body>
+
+</html>

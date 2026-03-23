@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Meta -->
+<link rel="shortcut icon"
+	href="https://bisag-n.gov.in/images/logos/bisag_logo.png">
+
+<!-- Title -->
+<title>BISAG-N View_Project</title>
+
+<!-- ************* Common Css Files ************* -->
+<!-- Animated css -->
+<th:block th:replace="Header.html::allcsslink"></th:block>
+
+<style>
+input:autofill {
+	box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+}
+</style>
+
+<style>
+/* Card Container */
+.card-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 20px;
+	padding: 20px;
+}
+
+/* Card Style */
+.card {
+	background-color: rgb(197, 220, 225);
+	border: 1px solid rgb(248, 249, 250);
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 300px;
+	padding: 15px;
+	margin: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	cursor: pointer;
+}
+
+.card:hover {
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-5px);
+	transition: all 0.3s ease;
+}
+
+.card-title {
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.card-content {
+	font-size: 1em;
+	color: #555;
+	display: -webkit-box;
+	-webkit-line-clamp: 3; /* Limits the text to 3 lines */
+	-webkit-box-orient: vertical;
+	overflow: hidden; /* Ensures content stays within the card */
+	text-overflow: ellipsis; /* Adds ellipsis to truncated content */
+	max-height: calc(1.5em * 3); /* 3 lines of text with line-height */
+	line-height: 1.5em; /* Adjusts the line-height */
+	white-space: normal; /* Ensures text breaks properly */
+	word-wrap: break-word; /* Breaks long words to prevent overflow */
+}
+
+/* Modal */
+.modal-body input {
+	margin-bottom: 10px;
+}
+</style>
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+</head>
+
+<body>
+
+	<!-- Loading wrapper start -->
+	<div id="loading-wrapper">
+		<div class="spinner">
+			<div class="line1"></div>
+			<div class="line2"></div>
+			<div class="line3"></div>
+			<div class="line4"></div>
+			<div class="line5"></div>
+			<div class="line6"></div>
+		</div>
+	</div>
+	<!-- Loading wrapper end -->
+
+	<!-- Page wrapper start -->
+	<div class="page-wrapper">
+
+		<!-- Sidebar wrapper start -->
+		<nav class="sidebar-wrapper">
+
+			<!-- Sidebar brand starts -->
+			<div class="sidebar-brand">
+				<a href="managerDash" class="logo"> <img
+					th:src="@{/assets/images/bisag_logo.png}" alt="Manager_dashboard" />
+				</a>
+			</div>
+			<!-- Sidebar brand starts -->
+
+			<!-- Sidebar menu starts -->
+			<div class="sidemenu-bar" th:insert="Header.html::Manager-sidebar-menu"></div>
+			<!-- Sidebar menu ends -->
+
+		</nav>
+		<!-- Sidebar wrapper end -->
+
+		<!-- ************* Main container start ************* -->
+		<div class="main-container">
+
+
+			<div class="page-header" th:fragment="admin-page-header">
+
+				<div class="toggle-sidebar" id="toggle-sidebar">
+					<i class="bi bi-list"></i>
+				</div>
+
+				<!-- Breadcrumb start -->
+				<ol class="breadcrumb d-md-flex d-none">
+					<li class="breadcrumb-item"><a href="viewprojects">View
+							Projects</a></li>
+
+				</ol>
+				<!-- Breadcrumb end -->
+
+				<!-- Header actions ccontainer start -->
+				<div class="header-actions-container">
+
+
+
+					<!-- Header actions start -->
+					<ul class="header-actions">
+						<li class="dropdown"><a href="#" id="userSettings"
+							class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+								<span class="user-name d-none d-md-block"></span> <span
+								class="avatar"> <img th:src="@{${profilePicturePath}}"
+									class="img-fluid" /> <span class="status online"></span>
+							</span>
+						</a>
+							<div class="dropdown-menu dropdown-menu-end"
+								aria-labelledby="userSettings">
+								<div class="header-profile-actions">
+									<a href="profile.html">Profile</a> <a
+										href="account-settings.html">Settings</a> <a href="#"
+										data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+										Password</a> <a href="javascript:void(0)" id="logoutF">Logout</a>
+
+								</div>
+							</div></li>
+					</ul>
+					<!-- Header actions end -->
+
+				</div>
+				<!-- Header actions ccontainer end -->
+
+				<!-- Display messages if exists -->
+				<div th:if="${message}" class="alert alert-success" role="alert">
+					<p th:text="${message}"></p>
+				</div>
+				<div th:if="${error}" class="alert alert-danger" role="alert">
+					<p th:text="${error}"></p>
+				</div>
+
+			</div>
+
+
+
+			<!-- Content wrapper scroll start -->
+			<div class="content-wrapper-scroll">
+
+				<!-- Content wrapper start -->
+				<div class="content-wrapper">
+
+
+
+
+					<!-- Dynamic Card Container -->
+					<!-- <div class="card-container">
+						Thymeleaf loop to generate cards dynamically
+						<div class="card" th:each="project : ${projects}"
+							data-bs-toggle="modal" data-bs-target="#editModal"
+							th:data-bs-id="${project.id}"
+							th:data-bs-name="${project.projectName}"
+							th:data-bs-description="${project.projectDesc}"
+							th:data-bs-client="${project.clientName}"
+							th:data-bs-startdate="${project.startDate}">
+							<div class="card-title" th:text="${project.projectName}">Project
+								Name</div>
+							<div class="card-content" th:text="${project.projectDesc}">Project
+								Description</div>
+						</div>
+					</div> -->
+					
+					
+					<div class="card-container">
+						<!-- Thymeleaf loop to generate cards dynamically -->
+						<div class="card" th:each="project : ${projects}">
+							<div class="card-title" th:text="${project.projectName}">Project
+								Name</div>  <!-- 'Project Name: ' +  -->
+							<!-- "View Details" button to open the modal -->
+							<button type="button" class="btn btn-primary"
+								data-bs-toggle="modal" data-bs-target="#editModal"
+								th:data-bs-id="${project.id}"
+								th:data-bs-name="${project.projectName}"
+								th:data-bs-description="${project.projectDesc}"
+								th:data-bs-client="${project.clientName}"
+								th:data-bs-startdate="${project.startDate}">Update Details</button>
+						</div>
+					</div>
+					
+					
+										
+				</div>
+
+
+				<!-- Modal for Editing Project -->
+				<div class="modal fade" id="editModal" tabindex="-1"
+					aria-labelledby="editModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="editModalLabel">Edit Project</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form id="editForm">
+									<!-- Hidden field to store the project ID -->
+									<input type="hidden" id="projectId" name="projectId">
+
+									<div class="mb-3">
+										<label for="projectName" class="form-label">Project
+											Name</label> <input type="text" class="form-control" id="projectName"
+											name="projectName">
+									</div>
+									<div class="mb-3">
+										<label for="projectDescription" class="form-label">Project
+											Description</label> <input type="text" class="form-control"
+											id="projectDescription" name="projectDescription">
+									</div>
+									<div class="mb-3">
+										<label for="clientName" class="form-label">Client Name</label>
+										<input type="text" class="form-control" id="clientName"
+											name="clientName">
+									</div>
+									<div class="mb-3">
+										<label for="startDate" class="form-label">Start Date</label> <input
+											type="date" class="form-control" id="startDate"
+											name="startDate">
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary btn-success"
+									onclick="saveChanges()">Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+			<!-- Content wrapper end -->
+
+			<!-- App Footer start -->
+			<div class="app-footer" th:insert="footer.html::footer"></div>
+			<!-- App footer end -->
+
+		</div>
+		<!-- Content wrapper scroll end -->
+
+	</div>
+	<!-- ************* Main container end ************* -->
+
+	</div>
+	<!-- Page wrapper end -->
+
+	<div th:replace="Header.html::manager-changePasswordmodal"></div>
+
+	<form th:action="@{/logout}" method="post" id="logoutForm"
+		name="logoutForm"></form>
+
+	<!-- Required JavaScript Files -->
+	<script th:src="@{/assets/js/jquery.min.js}"></script>
+	<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/assets/js/modernizr.js}"></script>
+	<script th:src="@{/assets/js/moment.js}"></script>
+
+	<!-- Vendor Js Files -->
+	<div th:replace="footer.html::common-scripts"></div>
+
+
+	<!-- JavaScript to handle modal data population -->
+	<script>
+    const editModal = document.getElementById('editModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        // Retrieve data attributes from the clicked button
+        const projectId = button.getAttribute('data-bs-id');
+        const name = button.getAttribute('data-bs-name');
+        const description = button.getAttribute('data-bs-description');
+        const clientName = button.getAttribute('data-bs-client');
+        const startDate = button.getAttribute('data-bs-startdate');
+
+        // Populate the modal fields
+        document.getElementById('projectId').value = projectId;
+        document.getElementById('projectName').value = name;
+        document.getElementById('projectDescription').value = description;
+        document.getElementById('clientName').value = clientName;
+        document.getElementById('startDate').value = startDate;
+    });
+    
+    
+
+    // Function to save changes
+    function saveChanges() {
+        const projectId = document.getElementById('projectId').value;
+        const name = document.getElementById('projectName').value;
+        const description = document.getElementById('projectDescription').value;
+        const clientName = document.getElementById('clientName').value;
+        const startDate = document.getElementById('startDate').value;
+
+        // AJAX request to update the project
+        var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+
+            fetch(`${contextPath}/manager/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content') // Include CSRF token if needed
+            },
+            body: JSON.stringify({
+                id: projectId,
+                projectName: name,
+                projectDesc: description,
+                clientName: clientName,
+                startDate: startDate
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Changes saved successfully!');
+                location.reload(); // Reload the page to reflect changes
+            } else {
+                alert('Error saving changes.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+
+
+
+
+</body>
+
+</html>

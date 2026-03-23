@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<th:block th:fragment="allcsslink">
+	<link rel="stylesheet" th:href="@{/assets/css/animate.css}">
+
+	<!-- Bootstrap font icons css -->
+	<link rel="stylesheet"
+		th:href="@{/assets/fonts/bootstrap/bootstrap-icons.css}">
+
+	<!-- Main css -->
+	<link rel="stylesheet" th:href="@{/assets/css/main.min.css}">
+
+	<!-- *************
+     ************ Vendor Css Files *************
+     ************ -->
+
+	<!-- Scrollbar CSS -->
+	<link rel="stylesheet"
+		th:href="@{/assets/vendor/overlay-scroll/OverlayScrollbars.min.css}">
+	<!-- daterangepicker -->
+	<link rel="stylesheet"
+		th:href="@{/assets/vendor/daterange/daterange.css}">
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Data Tables CSS -->
+	<link th:href="@{/assets/vendor/datatables/dataTables.bs5.css}"
+		rel="stylesheet">
+	<link th:href="@{/assets/vendor/datatables/dataTables.bs5-custom.css}"
+		rel="stylesheet">
+</th:block>
+
+
+
+</head>
+<body>
+
+
+
+
+
+	<!-- --------------------------------------------------------------------- -->
+
+
+	<!--USER  SIDE BAR MENU -->
+
+	<!-- Sidebar menu starts -->
+
+	<div class="sidebar-menu" th:fragment="side-menu-bar">
+		<div class="sidebarMenuScroll">
+			<ul>
+				<li class="active"><a th:href="@{/user/emp_Dash}"> <i
+						class="bi bi-house"></i> <span class="menu-text">Dashboards</span>
+				</a></li>
+				<li><a th:href="@{/user/new_cabBill}"> <i
+						class="bi bi-currency-dollar"></i> <span class="menu-text">Cab
+							Bill</span>
+				</a></li>
+
+				<li class="sidebar-dropdown"><a href="#"> <i
+						class="bi bi-stickies"></i> <span class="menu-text">Account
+							Settings</span>
+				</a>
+					<div class="sidebar-submenu">
+						<ul>
+							<!-- Other submenu items -->
+							<li><a href="#" data-bs-toggle="modal"
+								data-bs-target="#modalDark">Change Password</a></li>
+						</ul>
+					</div></li>
+
+				<li class="active"><a th:href="@{/user/viewProjectUser}"> <i
+						class="bi bi-eye"></i> <span class="menu-text">View Project</span>
+				</a></li>
+
+			</ul>
+		</div>
+	</div>
+
+
+
+
+
+	<div class="sidebar-menu" th:fragment="Manager-sidebar-menu">
+		<div class="sidebarMenuScroll">
+			<ul>
+				<li class="active"><a th:href="@{/manager/managerDash}"> <i
+						class="bi bi-house"></i> <span class="menu-text">Dashboards</span>
+				</a></li>
+				<li><a th:href="@{/manager/viewprojects}"> <i
+						class="bi bi-eye-fill"></i> <span class="menu-text">View
+							Project </span>
+				</a></li>
+
+
+			</ul>
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<!-- ------------------------------------------------------------------------------------ -->
+
+	<!-- <div class="sidemenu-bar" th:fragment="Manager-sidebar-menu">
+		<div class="sidebarMenuScroll">
+			<ul>
+				<li class="active"><a href="managerDash"> <i
+						class="bi bi-house"></i> <span class="menu-text">Dashboard</span>
+				</a></li>
+				<li><a href="viewprojects"> <i class="bi bi-eye-fill"></i>
+						<span class="menu-text">View Project</span>
+				</a></li>
+			</ul>
+		</div>
+	</div> -->
+
+
+
+
+
+
+
+
+
+	<!-- ----------------------------------------------------------------------------- -->
+
+	<!-- USER PAGE HEADER -->
+
+	<div class="page-header" th:fragment="user-pageheader">
+
+		<div class="toggle-sidebar" id="toggle-sidebar">
+			<i class="bi bi-list"></i>
+		</div>
+
+
+
+		<!-- Header actions ccontainer start -->
+		<div class="header-actions-container">
+			<!-- Display messages if exists -->
+			<div th:if="${message}" class="alert alert-success" role="alert">
+				<p th:text="${message}"></p>
+			</div>
+			<div th:if="${error}" class="alert alert-danger" role="alert">
+				<p th:text="${error}"></p>
+			</div>
+			<!-- <div th:if="${successMessage}" class="alert alert-success"
+				id="successMessage" th:text="${successMessage}"></div>
+			<div th:if="${errorMessage}" class="alert alert-danger"
+				id="errorMessage" th:text="${errorMessage}"></div> -->
+
+			<!-- Header actions start -->
+			<ul class="header-actions">
+				<li class="dropdown"><a href="#" id="AccountSetting"
+					class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+
+						<span class="avatar"> <img
+							th:src="@{${profilePicturePath}}" alt="Admin Templates"> <span
+							class="status online"></span>
+
+					</span>
+				</a>
+					<div class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="userSettings">
+						<div class="header-profile-actions">
+							<a th:href="@{/user/profile}">Profile</a> <a
+								href="account-settings.html">Settings</a> <a
+								href="javascript:void(0)" id="logoutF">Logout</a>
+						</div>
+					</div></li>
+			</ul>
+			<!-- Header actions end -->
+
+		</div>
+		<!-- Header actions ccontainer end -->
+
+	</div>
+	<!-- Page header ends -->
+
+	<!-- ---------------------------------------------------------------------------------- -->
+
+
+	<!-- ADMIN DASHBOARD PAGE HEADER  -->
+
+	<!-- Page header starts -->
+	<div class="page-header" th:fragment="admin-page-header">
+
+		<div class="toggle-sidebar" id="toggle-sidebar">
+			<i class="bi bi-list"></i>
+		</div>
+
+		<!-- Breadcrumb start -->
+		<ol class="breadcrumb d-md-flex d-none">
+			<li class="breadcrumb-item"><i class="bi bi-house"></i> <a
+				href="commonDash">Dashboard</a></li>
+
+		</ol>
+		<!-- Breadcrumb end -->
+
+		<!-- Header actions ccontainer start -->
+		<div class="header-actions-container">
+
+
+
+			<!-- Header actions start -->
+			<ul class="header-actions">
+				<li class="dropdown"><a href="#" id="userSettings"
+					class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+						<span class="user-name d-none d-md-block"></span> <span
+						class="avatar"> <img th:src="@{${profilePicturePath}}"
+							class="img-fluid" /> <span class="status online"></span>
+					</span>
+				</a>
+					<div class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="userSettings">
+						<div class="header-profile-actions">
+							<a th:href="@{/admin/profile.html}">Profile</a> <a
+								href="account-settings.html">Settings</a> <a href="#"
+								data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+								Password</a> <a href="javascript:void(0)" id="logoutF">Logout</a>
+
+						</div>
+					</div></li>
+			</ul>
+			<!-- Header actions end -->
+
+		</div>
+		<!-- Header actions ccontainer end -->
+
+		<!-- Display messages if exists -->
+		<div th:if="${message}" class="alert alert-success" role="alert">
+			<p th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<p th:text="${error}"></p>
+		</div>
+
+		<!-- <div id="flashMessages">
+				<div th:if="${successMessage}" class="alert alert-success"
+					id="successMessage" th:text="${successMessage}"></div>
+				<div th:if="${errorMessage}" class="alert alert-danger"
+					id="errorMessage" th:text="${errorMessage}"></div>
+			</div> -->
+
+	</div>
+
+	<!-- ----------------------------------------------------------------------------- -->
+
+
+
+	<!-- ADMIN EMPLOYEE PAGE HEADER -->
+
+	<div class="page-header" th:fragment="employee-pageheader">
+
+		<div class="toggle-sidebar" id="toggle-sidebar">
+			<i class="bi bi-list"></i>
+		</div>
+
+		<!-- Breadcrumb start -->
+		<ol class="breadcrumb d-md-flex d-none">
+			<li class="breadcrumb-item"><i class="bi bi-person"></i> <a
+				href="reg_employee">Employee Directory</a></li>
+			<li class="breadcrumb-item breadcrumb-active" aria-current="page">Employee</li>
+
+		</ol>
+		<!-- Breadcrumb end -->
+
+		<!-- Header actions ccontainer start -->
+		<div class="header-actions-container">
+
+
+
+			<!-- Header actions start -->
+			<ul class="header-actions">
+				<li class="dropdown"><a href="#" id="userSettings"
+					class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+						<span class="user-name d-none d-md-block"></span> <span
+						class="avatar"> <img th:src="@{${profilePicturePath}}"
+							class="img-fluid" /> <span class="status online"></span>
+					</span>
+				</a>
+					<div class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="userSettings">
+						<div class="header-profile-actions">
+							<a href="profile.html">Profile</a> <a
+								href="account-settings.html">Settings</a> <a href="#"
+								data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+								Password</a> <a href="javascript:void(0)" id="logoutF">Logout</a>
+
+						</div>
+					</div></li>
+			</ul>
+			<!-- Header actions end -->
+
+		</div>
+		<!-- Header actions ccontainer end -->
+
+		<!-- Display messages if exists -->
+		<div th:if="${message}" class="alert alert-success" role="alert">
+			<p th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<p th:text="${error}"></p>
+		</div>
+
+	</div>
+
+	<!-- -------------------------------------------------------------------------- -->
+
+
+	<!--ADMIN BILL_SUBMITTED PAGE HEADER  -->
+
+	<div class="page-header" th:fragment="admin-billsubmitted">
+
+		<div class="toggle-sidebar" id="toggle-sidebar">
+			<i class="bi bi-list"></i>
+		</div>
+
+		<!-- Breadcrumb start -->
+		<ol class="breadcrumb d-md-flex d-none">
+			<li class="breadcrumb-item"><i class="bi bi-person"></i> <a
+				th:href="@{/admin/billSubmitted}">Cab Bill</a></li>
+			<li class="breadcrumb-item breadcrumb-active" aria-current="page">Submitted
+				Bill</li>
+		</ol>
+		<!-- Breadcrumb end -->
+
+
+		<!-- Header actions ccontainer start -->
+		<div class="header-actions-container">
+
+			<!-- Header actions start -->
+			<ul class="header-actions">
+				<li class="dropdown"><a href="#" id="userSettings"
+					class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+
+						<span class="avatar"> <img
+							th:src="@{${profilePicturePath}}" class="img-fluid"
+							alt="Admin Templates"> <span class="status online"></span>
+					</span>
+				</a>
+					<div class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="userSettings">
+						<div class="header-profile-actions">
+							<a href="profile.html">Profile</a> <a
+								href="account-settings.html">Settings</a><a href="#"
+								data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+								Password</a> <a href="javascript:void(0)" id="logoutF">Logout</a>
+						</div>
+					</div></li>
+			</ul>
+			<!-- Header actions end -->
+
+		</div>
+		<!-- Header actions ccontainer end -->
+
+		<div th:if="${message}" class="alert alert-success" role="alert">
+			<p th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<p th:text="${error}"></p>
+		</div>
+
+	</div>
+
+	<!-- ------------------------------------------------------------------ -->
+
+
+	<!-- ADMIN SUBMITTED BILL STATUS PAGE HEADER -->
+
+	<div class="page-header" th:fragment="admin-billstatus-header">
+
+		<div class="toggle-sidebar" id="toggle-sidebar">
+			<i class="bi bi-list"></i>
+		</div>
+
+		<!-- Breadcrumb start -->
+		<ol class="breadcrumb d-md-flex d-none">
+			<li class="breadcrumb-item"><i class="bi bi-person"></i> Cab
+				Bill</li>
+			<li class="breadcrumb-item breadcrumb-active" aria-current="page"><a
+				th:href="@{/admin/billSubmitted}">Submitted Bill</a></li>
+
+			<li class="breadcrumb-item breadcrumb-active" aria-current="page">SubmittedBillStatus</li>
+		</ol>
+		<!-- Breadcrumb end -->
+
+
+		<!-- Header actions ccontainer start -->
+		<div class="header-actions-container">
+
+			<!-- Header actions start -->
+			<ul class="header-actions">
+				<li class="dropdown"><a href="#" id="userSettings"
+					class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+
+						<span class="avatar"> <img
+							th:src="@{${profilePicturePath}}" class="img-fluid"
+							alt="Admin Templates"> <span class="status online"></span>
+					</span>
+				</a>
+					<div class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="userSettings">
+						<div class="header-profile-actions">
+							<a  th:href="@{\admin\profile}">Profile</a> <a
+								href="account-settings.html">Settings</a> <a href="#"
+								data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+								Password</a><a href="javascript:void(0)" id="logoutF">Logout</a>
+						</div>
+					</div></li>
+			</ul>
+			<!-- Header actions end -->
+
+		</div>
+		<!-- Header actions ccontainer end -->
+		<div th:if="${message}" class="alert alert-success" role="alert">
+			<p th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<p th:text="${error}"></p>
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- ----------------------------------------------------------------------- -->
+
+
+
+	<!-- ADMIN CHANGE PASSWORD MODAL  -->
+
+	<th:block th:fragment="changePasswordmodal">
+		<div class="modal fade" id="changePasswordModal" tabindex="-1"
+			aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="changePasswordModalLabel">Change
+							Password</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+
+					<form th:action="@{/admin/changePassword}" method="post">
+						<div class="modal-body">
+							<div class="mb-3">
+								<label for="currentPassword" class="form-label">Current
+									Password</label> <input type="password" class="form-control"
+									id="currentPassword" name="currentPassword" required>
+							</div>
+							<div class="mb-3">
+								<label for="newPassword" class="form-label">New Password</label>
+								<input type="password" class="form-control" id="newPassword"
+									name="newPassword" required>
+							</div>
+							<button type="button" class="btn btn-secondary btn-dark"
+								data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary btn-success">Save
+								Changes</button>
+						</div>
+						<div class="modal-footer"></div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</th:block>
+
+	<!-- -------------------------------------------------------------------------- -->
+
+	<!-- User chnage password modal -->
+
+	<th:block th:fragment="user-changePasswordmodal">
+		<div class="modal fade" id="modalDark" tabindex="-1"
+			aria-labelledby="modalDarkLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalDarkLabel">Change Password</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="changePasswordForm" th:action="@{/user/changePassword}"
+							method="post">
+							<div class="mb-3">
+								<label for="currentPassword" class="form-label">Current
+									Password</label> <input type="password" class="form-control"
+									id="currentPassword" name="currentPassword" required>
+							</div>
+							<div class="mb-3">
+								<label for="newPassword" class="form-label">New Password</label>
+								<input type="password" class="form-control" id="newPassword"
+									name="newPassword" required>
+							</div>
+							<button type="button" class="btn btn-dark"
+								data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-success">Save
+								changes</button>
+
+						</form>
+					</div>
+					<div class="modal-footer"></div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+
+	<!-- ----------------------------------------------------------------------------------- -->
+
+
+	<!-- Manager changed Password Model -->
+
+	<th:block th:fragment="manager-changePasswordmodal">
+		<div class="modal fade" id="changePasswordModal" tabindex="-1"
+			aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="changePasswordModalLabel">Change
+							Password</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+
+					<form th:action="@{/manager/changePassword}" method="post">
+						<div class="modal-body">
+							<div class="mb-3">
+								<label for="currentPassword" class="form-label">Current
+									Password</label> <input type="password" class="form-control"
+									id="currentPassword" name="currentPassword" required>
+							</div>
+							<div class="mb-3">
+								<label for="newPassword" class="form-label">New Password</label>
+								<input type="password" class="form-control" id="newPassword"
+									name="newPassword" required>
+							</div>
+							<button type="button" class="btn btn-secondary btn-dark"
+								data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary btn-success">Save
+								Changes</button>
+						</div>
+						<div class="modal-footer"></div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</th:block>
+
+	<!-- --------------------------------------------------------------------------------------------------- -->
+
+
+	<!-- ADMIN SIDE MENU BAR -->
+	
+	
+	<div class="sidebar-menu" th:fragment="Admin-sidemnubar">
+		<div class="sidebarMenuScroll">
+			<ul>
+				<li><a th:href="@{/admin/commonDash}"> <i
+						class="bi bi-house"></i> <span class="menu-text">Dashboard</span>
+				</a></li>
+				<li class="sidebar-dropdown"><a href="#"> <i
+						class="bi bi-person"></i> <span class="menu-text">Employee
+							Directory</span>
+				</a>
+					<div class="sidebar-submenu">
+						<ul>
+							<li><a th:href="@{/admin/reportingManager}">Reporting
+									Personnel</a></li>
+							<li class="current-page"><a th:href="@{/admin/reg_employee}">Employee</a></li>
+						</ul>
+					</div></li>
+				<li class="sidebar-dropdown "><a href="#"> <i
+						class="bi bi-person"></i> <span class="menu-text">Cab Bill</span>
+				</a>
+					<div class="sidebar-submenu">
+						<ul>
+							<li><a href="#">New Cab Bill</a></li>
+							<li class="current-page"><a
+								th:href="@{/admin/billSubmitted}">Submitted Bill</a></li>
+						</ul>
+					</div></li>
+
+				<!--  -->
+				<li class="sidebar-dropdown"><a href="#"> <i
+						class="bi bi-border-width"></i> <span class="menu-text">Master
+							Dropdown</span>
+				</a>
+					<div class="sidebar-submenu">
+						<ul>
+							<li><a th:href="@{/admin/Agency}">Agency</a></li>
+							<li><a th:href="@{/admin/Dept}">Department</a></li>
+							<li><a th:href="@{/admin/jobTitle}">Job Title</a></li>
+							<li><a th:href="@{/admin/reportingPersonnel}">Reporting
+									Personnel</a></li>
+							<li><a th:href="@{/admin/hometown}">Hometown</a></li>
+						</ul>
+					</div></li>
+				<!--  -->
+			</ul>
+		</div>
+	</div>
+
+	<!-- ------------------------------------------------------------------------------------------------- -->
+
+</body>
+</html>
